@@ -1,0 +1,350 @@
+Q1. What is the Input and Output Stream in java ?
+
+Ans:- 
+      INPUT-STREAM:-
+           
+           An input stream is used to read data from a source. The InputStream class is the abstract superclass for all classes 
+             representing an input stream of bytes. Some commonly used subclasses of InputStream include:
+
+                  FileInputStream: For reading bytes from a file.
+                  ByteArrayInputStream: For reading bytes from a byte array.
+                  ObjectInputStream: For reading objects from a stream (used in serialization).
+
+
+
+      OUTPUT-STREAM:-
+   
+          An output stream is used to write data to a destination. The OutputStream class is the abstract superclass for all
+             classes representing an output stream of bytes. Some commonly used subclasses of OutputStream include:
+
+                FileOutputStream: For writing bytes to a file.
+                ByteArrayOutputStream: For writing bytes to a byte array.
+                ObjectOutputStream: For writing objects to a stream (used in serialization).
+
+Q2.  What are the meathods of output stream in java ?
+
+Ans:-
+        PRIMARY METHODS OF OUTPUT STREAM ARE:-
+             
+                 1.void write(int b)
+                 2.void write(byte[] b)
+                 3.void write(byte[] b, int off, int len)
+                 4.void flush()
+                 5.void Close()
+              
+                    these are the some meathods of  output stream in java.
+
+Q3.  What is Serialization in java ?
+
+Ans:-  Serialization in Java is a mechanism by which an object can be converted into a byte stream, making it possible to save 
+       the object to a file or send it over a network. The reverse process, where the byte stream is converted back into a copy
+       of the object, is known as deserialization. This is particularly useful for persisting the state of an object or 
+       transmitting it between different components of a distributed application.
+         
+        How to Serialized an object :-
+ 
+                            These are the following point to serialized an object :-
+                   
+                               To serialize an object, there are a few conditions to be met. Some other key points need to be 
+                               highlighted before you proceed further in the article. These are the conditions and points to 
+                               remember while using serialization in Java.
+
+                          1. Serialization is a marker interface with no method or data member.
+                          2. You can serialize an object only by implementing the serializable interface
+                          3. All the fields of a class must be serializable; otherwise, use the transient keyword (more about it 
+                              later).
+                          4.The child class doesn’t have to implement the Serializable interface, if the parent class does
+                          5.The serialization process only saves non-static data members, but not static or transient data  
+                             members
+                          6.By default, the String and all wrapper classes implement the Serializable interface
+
+Q4.  What are  the Serializable Interface in java ?
+
+Ans:-  The Serializable interface is a marker interface used to indicate that a class can be serialized. Serialization is the 
+       process of converting an object's state into a byte stream so that the byte stream can be reverted back into a copy of the
+       object.
+       1.Marker Interface
+       2.serialVersionUID
+       3.Transient Fields
+       4.Customization
+       
+       A Serialization program for understanding :- Is in the program files which is shared with the name of LaunchSZ.java file .
+
+Q5. What are the Deserialization in java ?
+
+Ans :- Deserialization in Java is the process of reconstructing an object from a byte stream, which is the reverse operation of 
+       serialization. During deserialization, the state of an object is restored from a previously serialized byte stream, 
+       effectively reconstituting the original object.
+
+           1.Reconstructing Objects
+           2.Serializable Interface
+           3.ObjectInputStream
+           4.serialVersionUID
+           5.Transient and Static Fields
+
+         A Dsserialization program for understanding :- Is in the program files which is shared with the name of LaunchDSZ.java
+               file .
+
+Q6. How is serialization achieved in java ?
+
+Ans :- Program to achieve serialization in java is :-
+   
+                   import java.io.BufferedInputStream;
+                   import java.io.FileInputStream;
+                   import java.io.ObjectInputStream;
+                   import java.io.Serializable;
+
+                      class Cricketer implements Serializable {
+                         private String name;
+                         transient int age;
+                         private int runs;
+
+                            public Cricketer(String name, int age, int runs) {
+                             this.name = name;
+                             this.age = age;
+                             this.runs = runs;
+                           }
+
+            
+                          }
+
+                      }
+
+                      public class LaunchSZ {
+                       public static void main(String[] args) throws Exception {
+                          System.out.println("Begin...");
+                          Cricketer c = new Cricketer("Rohit", 20, 300000);
+                           c.disp();
+
+                          File f = new File("Ar.txt");
+                          f.createNewFile();
+                          FileOutputStream fos = new FileOutputStream("Ar.txt");
+                          BufferedOutputStream bos = new BufferedOutputStream(fos);
+                          ObjectOutputStream oos = new ObjectOutputStream(bos);
+                          oos.writeObject(c);
+                          oos.writeObject(c1);
+
+                         oos.flush();
+                         oos.close();
+
+           }
+}
+
+  
+          This  program also shared with the name of LaunchSZ.java . 
+
+
+Q7.  How is deserialization achieve in java ?
+
+Ans:- 
+           These are the program to achieve deserialization in java :-
+   
+                    import java.io.BufferedInputStream;
+                    import java.io.FileInputStream;
+                    import java.io.ObjectInputStream;
+                    import java.io.Serializable;
+
+                    class Cricketer implements Serializable {
+                      private String name;
+                      private int age;
+                      private int runs;
+
+            public Cricketer(String name, int age, int runs) {
+             this.name = name;
+             this.age = age;
+             this.runs = runs;
+            }
+
+          // for DESERIALIZATION
+            public void disp() {
+             System.out.println(name);
+             System.out.println(age);
+             System.out.println(runs);
+                }
+
+              }
+
+                 public class LaunchDSZ {
+                    public static void main(String[] args) throws Exception {
+                     System.out.println("Begin...");
+
+                  // PROGRAM FOR DESERIALIZATION OF THE DATA
+
+                    FileInputStream fis = new FileInputStream("Ar.txt");
+                    BufferedInputStream bis = new BufferedInputStream(fis);
+                    ObjectInputStream ois = new ObjectInputStream(bis);
+
+                      Cricketer cr = (Cricketer) ois.readObject();
+                      cr.disp();
+
+                       ois.close();
+
+                    }
+                 }
+            
+ 
+                     This  program also shared with the name of LaunchDSZ.java . 
+
+
+Q8.  How can you avoid certain member variables of class from getting serialized ?
+
+Ans:- 
+          In Java, you can prevent certain member variables of a class from being serialized by using the transient keyword. When
+           a field is declared as transient, it will not be included in the serialization process, meaning its value will not be
+           saved to the byte stream. During deserialization, transient fields will be initialized to their default values (e.g.,
+            null for objects, 0 for integers, etc.).
+
+
+    program of it :-
+              
+                  import java.io.BufferedInputStream;
+                  import java.io.FileInputStream;
+                  import java.io.ObjectInputStream;
+                  import java.io.Serializable;
+
+                 class Cricketer implements Serializable {
+                 private String name;
+                 transient int age;
+                 private int runs;
+
+                 public Cricketer(String name, int age, int runs) {
+                  this.name = name;
+                  this.age = age;
+                  this.runs = runs;
+                     }
+
+             // for DESERIALIZATION
+                  public void disp() {
+                    System.out.println(name);
+                    System.out.println(age);
+                    System.out.println(runs);
+               }
+
+             }
+
+              public class LaunchDSZ {
+                public static void main(String[] args) throws Exception {
+                 System.out.println("Begin...");
+
+        // PROGRAM FOR DESERIALIZATION OF THE DATA
+
+                 FileInputStream fis = new FileInputStream("Ar.txt");
+                 BufferedInputStream bis = new BufferedInputStream(fis);
+                 ObjectInputStream ois = new ObjectInputStream(bis);
+
+                  Cricketer cr = (Cricketer) ois.readObject();
+                   cr.disp();
+                   ois.close();
+
+                 }
+              }
+
+Q9.  What classes are available in the javaIO file classes API ?
+
+Ans:-   
+       The Java I/O (Input/Output) API provides a comprehensive set of classes that handle input and output operations, 
+         particularly for file manipulation. These classes are part of the java.io package. Below is a categorized list of the 
+         main classes available in the Java I/O file classes API:
+
+           Java File class is Java’s representation of a file or directory pathname. Because file and directory names have 
+             different formats on different platforms, a simple string is not adequate to name them. Java File class contains 
+             several methods for working with the pathname, deleting and renaming files, creating new directories, listing the 
+             contents of a directory, and determining several common attributes of files and directories. 
+
+               It is an abstract representation of files and directory pathnames.
+                A pathname, whether abstract or in string form can be either absolute or relative. The parent of an abstract   
+               pathname may be obtained by invoking the getParent() method of this class.
+
+              First of all, we should create the File class object by passing the filename or directory name to it. A file system
+              may implement restrictions to certain operations on the actual file-system object, such as reading, writing, and
+              executing. These restrictions are collectively known as access permissions.
+
+              Instances of the File class are immutable; that is, once created, the abstract pathname represented by a File 
+               object will never change.
+
+Q10.   What is the difference between Externalizable and Serialization interface ?
+
+Ans :- 
+         Difference Between Serializable and Externalizable in Java Serialization:-
+
+              The process of writing the state of an object to a file is called serialization, but strictly speaking, it is the 
+              process of converting an object from java supported form into a file-supported form or network-supported form by
+              using fileOutputStream and objectOutputStream classes we can implement serialization. 
+
+              But we can serialize only serializable objects. An object is said to be serializable if and only if the
+              corresponding class implements a Serializable interface. Serializable interface is present in java.io package, and
+              it doesn’t contain any method and hence it is a marker interface. If we are trying to serializable a non-
+              serializable object then we will get Runtime Exception saying notSerializableException. 
+
+      
+              Program to understand  difference between Externalizable and Serialization :-
+              
+             // Java Program to illustrate Serializable
+
+                   Importing utility classes
+                   Importing input output classes
+                   import java.io.*;
+                   import java.util.*;
+
+                   Class implementing serializable interface
+                    class serializableDemo implements Serializable {
+	
+	           // Member variables of this class
+	               String name;
+	               int age;
+	               int jobId;
+
+	            // Default constructor
+	             public serializableDemo(String name, int age, int jobId)
+	          {
+	           	// This keyword is used to refer
+	              	// current object instance
+	                	this.name = name;
+	                	this.age = age;
+	                 	this.jobId = jobId;
+	           }
+
+	            public static void main(String[] args) throws Exception
+	           {
+ 
+	         	// Creating an object of class in main() method
+	                	serializableDemo t1 = new serializableDemo("Ram", 34, 2364);
+
+		// Serialization
+    
+		// Saving of object in a file
+		FileOutputStream fos
+			= new FileOutputStream("abc1.ser");
+		ObjectOutputStream oos
+			= new ObjectOutputStream(fos);
+		oos.writeObject(t1);
+
+		System.out.println("Object has been serialized");
+		// Deserialization
+
+
+		FileInputStream fis
+			= new FileInputStream("abc1.ser");
+		ObjectInputStream ois = new ObjectInputStream(fis);
+
+		
+		serializableDemo t2
+			= (serializableDemo)ois.readObject();
+
+		// Display message only
+		System.out.println("Object has been deserialized ");
+		System.out.println("Name:" + t2.name + "\n"
+						+ "Age:" + t2.age + "\n"
+						+ t2.jobId);
+	}
+}
+
+
+
+                               
+
+
+
+
+
+
